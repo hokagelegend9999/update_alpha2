@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# File path
+MENU_FILE="/usr/local/sbin/menu"
+
+# Backup the original file
+cp "$MENU_FILE" "$MENU_FILE.bak"
+
+# Insert the new VPN menu option in the display section
+sed -i '/echo -e " \\033\[36m│$NC   \[${green}04${NC}\] MENU TROJAN/{n;n;s/.*/&\n\ echo -e \" \\033\[36m│$NC   \[${green}13${NC}\] MENU VPN ${z}         │$NC\"/}' "$MENU_FILE"
+
+# Insert the VPN menu case in the selection section
+sed -i '/10)\s*clear\s*menu-backup/a \
+13)\
+clear\
+menu-vpn\
+;;' "$MENU_FILE"
+
+echo "VPN menu option (number 13) has been successfully added to the menu."
