@@ -3,17 +3,30 @@
 # File path
 MENU_FILE="/usr/local/sbin/menu"
 
-# Backup the original file
+# Create backup
 cp "$MENU_FILE" "$MENU_FILE.bak"
 
-# Insert the new VPN menu option in the display section
-sed -i '/echo -e " \\033\[36m│$NC   \[${green}04${NC}\] MENU TROJAN/{n;n;s/.*/&\n\ echo -e \" \\033\[36m│$NC   \[${green}13${NC}\] MENU VPN ${z}         │$NC\"/}' "$MENU_FILE"
+# 1. FIRST remove any existing VPN menu entries (clean slate)
+sed -i '/MENU VPN/d' "$MENU_FILE"
+sed -i '/13 | 013)/,/;;/d' "$MENU_FILE"
 
-# Insert the VPN menu case in the selection section
-sed -i '/10)\s*clear\s*menu-backup/a \
-13)\
+# 2. Insert VPN menu in EXACT position - AFTER Trojan, BEFORE border
+sed -i '/echo -e "           ${z}$NC \[${r}04${NC}\]$green MENU TROJAN$NC/{
+a\
+echo -e "           ${z}$NC [${r}13${NC}]$green MENU VPN$NC   ${z}│$NC [${r}14${NC}]$green MENU BACKUP$NC ${z}$NC"
+}' "$MENU_FILE"
+
+# 3. Add case handler in CORRECT position - AFTER option 8
+sed -i '/^8 | 08)/,/^clear/{
+/^clear/ i\
+13 | 013)\
 clear\
 menu-vpn\
-;;' "$MENU_FILE"
+;;
+}' "$MENU_FILE"
 
-echo "VPN menu option (number 13) has been successfully added to the menu."
+# 4. Fix any potential formatting issues
+sed -i 's/╭════════════════╮╭══════════════════╮╭════════════════════╮/╭════════════════╮╭══════════════════╮╭════════════════════╮/' "$MENU_FILE"
+sed -i 's/╰════════════════╯╰══════════════════╯╰════════════════════╯/╰════════════════╯╰══════════════════╯╰════════════════════╯/' "$MENU_FILE"
+
+echo "Menu has been PERFECTLY fixed with VPN option in exact position!"
