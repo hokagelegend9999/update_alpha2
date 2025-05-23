@@ -22,7 +22,7 @@ sed -i '/^8 | 08)/,/;;/ {
 \
 13 | 013)\
 clear\
-menu-vpn\
+vpn\
 ;;
 }' "$MENU_FILE"
 
