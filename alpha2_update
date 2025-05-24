@@ -13,7 +13,7 @@ sed -i '/13 | 013)/,/;;/d' "$MENU_FILE"
 # 2. Insert VPN menu in EXACT position - AFTER Trojan, BEFORE border
 sed -i '/echo -e "           ${z}$NC \[${r}04${NC}\]$green MENU TROJAN$NC/{
 a\
-echo -e "           ${z}$NC [${r}13${NC}]$green MENU VPN$NC     "
+echo -e "         ${z}$NC [${r}13${NC}]$green MENU VPN$NC  ${z}$NC [${r}14${NC}]$green Clear Chace$NC "
 }' "$MENU_FILE"
 
 # 3. Add case handler in CORRECT position - AFTER option 8
@@ -31,7 +31,7 @@ sed -i '/^13 | 013)/,/;;/ {
 \
 14 | 014)\
 clear\
-menu-xray\
+clearcache\
 ;;
 }' "$MENU_FILE"
 
